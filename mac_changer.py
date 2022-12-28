@@ -23,7 +23,9 @@ options = get_arguments()
 # change_mac(options.interface, options.New_mac)
 ifconfig_result = subprocess.check_output(["ifconfig", options.interface]).decode()
 mac_search_result = re.search(r'\w\w:\w\w:\w\w:\w\w:\w\w:\w\w', ifconfig_result)
-print(mac_search_result.group(0))
-
+if mac_search_result:
+    print(mac_search_result.group(0))
+else:
+    print("could not read the mac address")
 
 
