@@ -1,6 +1,7 @@
 import subprocess
 import optparse
 import re
+
 def get_arguments():
     parser = optparse.OptionParser()
     parser.add_option("-i", "--interface", dest="interface", help="specify the interface")
@@ -16,16 +17,22 @@ def change_mac(interface, New_mac):
     subprocess.call(["ifconfig",interface, "down"])
     subprocess.call(["ifconfig",interface,"hw", "ether",New_mac])
     subprocess.call(["ifconfig",interface,"up"])
-    subprocess.call(["ifconfig",interface])
 
-
+def current_mac(interface):
+    ifconfig_result = subprocess.check_output(["ifconfig", interface]).decode()
+    mac_search_result = re.search(r'\w\w:\w\w:\w\w:\w\w:\w\w:\w\w', ifconfig_result)
+    if mac_search_result:
+        return mac_search_result.group(0)
+    else:
+        print("could not read the mac address")
 options = get_arguments()
-# change_mac(options.interface, options.New_mac)
-ifconfig_result = subprocess.check_output(["ifconfig", options.interface]).decode()
-mac_search_result = re.search(r'\w\w:\w\w:\w\w:\w\w:\w\w:\w\w', ifconfig_result)
-if mac_search_result:
-    print(mac_search_result.group(0))
+
+print("current mac:",current_mac(options.interface))
+
+change_mac(options.interface, options.New_mac)
+
+current_mac = current_mac(options.interface)
+if current_mac == options.New_mac:
+    print("[+] MAC address was sucessfullychanged :",current_mac)
 else:
-    print("could not read the mac address")
-
-
+    print("[-] MAC address not changed")
