@@ -23,7 +23,6 @@ def convert_dict(string):
             data = data.split("=")
             convertedDict.update({data[0]:data[1]})
         return convertedDict
-        input('--------')
     except AttributeError:
         pass
 
