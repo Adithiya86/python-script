@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import scapy.all as scapy
-import netfilterqueue 
+from netfilterqueue import NetfilterQueue 
 
 def process_packet(packet):
     scapy_packet = scapy.IP(packet.get_payload())   
@@ -22,7 +22,7 @@ def process_packet(packet):
 
 
 try:
-    queue = netfilterqueue.NetfilterQueue()
+    queue = NetfilterQueue()
     queue.bind(0, process_packet)
     queue.run()
 
